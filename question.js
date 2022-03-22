@@ -29,9 +29,22 @@ switch (mainMenuAnswers.startMenu) {
         console.log('adding roles')
         break;
     case choices[5]:
+        // connect to sql2 library and queries database
+        connect.query('SELECT * FROM `department`', (err, result) => {
+            if (err) throw err;
+            console.log(result)
+        })
         console.log('viewing departments')
         break;
     case choices[6]:
+        let { departmentName } = await inquirer.prompt([{
+            type: 'input',
+            name: 'departmentName',
+            message: 'What Department?',
+        }])
+        connect.query('INSERT INTO `departement`(`name`)VALUES(?)', [departmentName], (err) => {
+            if (err) throw err;
+        })
         console.log('adding departments')
         break;
     case choices[7]:
