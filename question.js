@@ -5,6 +5,8 @@ const choices = ['View All Employees', 'Add Employee', 'Update Employee Role', '
 const employeeAdd = ["Employee's First Name ?", " Employee's Last Name ?", "Employee's Role?", "Employee's Manager"]
 const roleAdd = ['what is the Roles?', 'Salary of the Role?', 'Role belongs to what department?']
 const seeTable = require('console.table')
+const { listenerCount } = require('./config.js')
+let flag = true;
 
 async function main() {
 
@@ -22,7 +24,40 @@ async function main() {
             break;
         case choices[1]:
             console.log('adding employee')
+            // break;
+            // questions to add employee
+            let {
+
+                firstName,
+                lastName,
+                role,
+                manager,
+
+            } = inquirer.prompt([{
+                type: 'input',
+                name: 'firstName',
+                message: employeeAdd[0],
+            },
+            {
+                type: 'input',
+                name: 'lastName',
+                message: employeeAdd[1],
+            },
+            {
+                type: 'input',
+                name: 'role',
+                message: employeeAdd[2],
+            },
+            {
+                type: 'input',
+                name: 'manager',
+                message: employeeAdd[3],
+            },
+            ])
+            console.log(firstName, lastName, role, manager)
             break;
+
+
         case choices[2]:
             console.log('updating role')
             break;
@@ -55,8 +90,14 @@ async function main() {
             break;
         case choices[7]:
             console.log('quit')
+            flag = false;
             break;
 
     }
+    connection.end();
 }
+
+// while (flag) {
 main();
+// }
+
