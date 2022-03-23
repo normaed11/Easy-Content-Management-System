@@ -33,7 +33,7 @@ async function main() {
                 role,
                 manager,
 
-            } = inquirer.prompt([{
+            } = await inquirer.prompt([{
                 type: 'input',
                 name: 'firstName',
                 message: employeeAdd[0],
@@ -60,12 +60,35 @@ async function main() {
 
         case choices[2]:
             console.log('updating role')
-            break;
+        // break;
+
         case choices[3]:
             console.log('viewing all roles')
             break;
         case choices[4]:
             console.log('adding roles')
+            // adding role 
+            let {
+                nameRole,
+                salary,
+                department,
+            } = await inquirer.prompt([{
+                type: 'input',
+                name: 'nameRole',
+                message: roleAdd[0],
+            },
+            {
+                type: 'input',
+                name: 'salary',
+                message: roleAdd[1],
+            },
+            {
+                type: 'input',
+                name: 'department',
+                message: roleAdd[2],
+            },
+            ])
+            console.log(nameRole, salary, department)
             break;
         case choices[5]:
             // connect to sql2 library and queries database
