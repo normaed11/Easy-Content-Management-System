@@ -1,15 +1,22 @@
 // import inquirer
 const inquirer = require('inquirer')
-const connection = require('./config.js')
+// import mysql2
+const mysql = require('mysql2/promise')
+
+// const connection = require('./config.js')
 const choices = ['View All Employees', 'Add Employee', 'Update Employee Role', 'View All Roles', 'Add Role', 'View all Departments', 'Add Department', 'Quit']
 const employeeAdd = ["Employee's First Name ?", " Employee's Last Name ?", "Employee's Role?", "Employee's Manager"]
 const roleAdd = ['what is the Roles?', 'Salary of the Role?', 'Role belongs to what department?']
 const seeTable = require('console.table')
 const { listenerCount } = require('./config.js')
 let flag = true;
+let rows, fields;
+
+
+
 
 async function main() {
-
+    const connection = await mysql.createConnection({ host: 'localhost', user: 'root', database: 'cms', password: 'Jones2705!' });
 
     // start inquirer
     let mainMenuAnswers = await inquirer.prompt([{
@@ -68,6 +75,10 @@ async function main() {
         case choices[4]:
             console.log('adding roles')
             // adding role 
+            rows = await connection.execute('SELECT * FROM `department`');
+            // console.log(await connection.execute('SELECT * FROM `role`'))
+            // console.log(rows[0])
+            let roles = rows[0].map(data => data.name)
             let {
                 nameRole,
                 salary,
@@ -83,9 +94,10 @@ async function main() {
                 message: roleAdd[1],
             },
             {
-                type: 'input',
+                type: 'list',
                 name: 'department',
                 message: roleAdd[2],
+                choices: roles,
             },
             ])
             console.log(nameRole, salary, department)
