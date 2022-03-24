@@ -71,6 +71,9 @@ async function main() {
 
         case choices[3]:
             console.log('viewing all roles')
+            let result = await connection.execute('SELECT * from `role` inner join `department` using(`id`)')
+            const table = seeTable.getTable(result[0])
+            console.log(table)
             break;
         case choices[4]:
             console.log('adding roles')
@@ -101,6 +104,10 @@ async function main() {
             },
             ])
             console.log(nameRole, salary, department)
+            let id = await connection.execute('SELECT * from `department` where `name`= ?', [department])
+            console.log(id[0][0].id)
+            // await connection.execute('INSERT INTO `role`(`title`,`salary`,`department_id`) values (?,?,?)', [nameRole, salary, id[0][0].id])
+            console.log(await connection.execute('INSERT INTO `role`(`title`,`salary`,`department_id`) values (?,?,?)', [nameRole, salary, id[0][0].id]))
             break;
         case choices[5]:
             // connect to sql2 library and queries database
