@@ -10,7 +10,10 @@ const roleAdd = ['what is the Roles?', 'Salary of the Role?', 'Role belongs to w
 const seeTable = require('console.table')
 const { listenerCount } = require('./config.js')
 let flag = true;
-let rows, fields;
+let rows;
+let roles;
+let managers;
+
 
 
 
@@ -33,6 +36,11 @@ async function main() {
             console.log('adding employee')
             // break;
             // questions to add employee
+            rows = await connection.execute('select title from role');
+            roles = rows[0].map(data => data.title)
+            rows = await connection.execute('select firstName, lastName from employee where role_id = 1 ')
+            managers = rows[0].map(data => data.firstName + data.lastName);
+            console.log(managers)
             let {
 
                 firstName,
@@ -51,14 +59,16 @@ async function main() {
                 message: employeeAdd[1],
             },
             {
-                type: 'input',
+                type: 'list',
                 name: 'role',
                 message: employeeAdd[2],
+                choices: roles
             },
             {
-                type: 'input',
+                type: 'list',
                 name: 'manager',
                 message: employeeAdd[3],
+                choices: managers
             },
             ])
             console.log(firstName, lastName, role, manager)
@@ -82,7 +92,7 @@ async function main() {
             rows = await connection.execute('SELECT * FROM `department`');
             // console.log(await connection.execute('SELECT * FROM `role`'))
             // console.log(rows[0])
-            let roles = rows[0].map(data => data.name)
+            roles = rows[0].map(data => data.name)
             let {
                 nameRole,
                 salary,
