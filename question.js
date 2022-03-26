@@ -71,7 +71,8 @@ async function main() {
 
         case choices[3]:
             console.log('viewing all roles')
-            let result = await connection.execute('SELECT * from `role` inner join `department` using(`id`)')
+            let result = await connection.execute('SELECT * FROM role r INNER JOIN department d on r.department_id=d.id')
+            // let result = await connection.execute()
             const table = seeTable.getTable(result[0])
             console.log(table)
             break;
